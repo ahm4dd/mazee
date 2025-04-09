@@ -54,3 +54,18 @@ class Cell():
         if self.has_bottom_wall:
             line = Line(Point(self._x1, self._y2), Point(self._x2, self._y2)) # Create a line from the bottom left corner to the bottom right corner
             self._win.draw_line(line)
+    
+    def draw_move(self, to_cell: 'Cell', undo: bool = False) -> None:
+        """
+        Draws a line from the center of this cell to the center of the given cell to indicate a move.
+        Args:
+            to_cell (Cell): The cell to move to.
+            undo (bool): Whether this move is an undo move. If True, draw the line in gray. If False, draw the line in red. Defaults to False.
+        """
+        point_cell1 = Point((self._x1 + self._x2) / 2, (self._y1 + self._y2) / 2) # Get the center point of the current cell
+        point_cell2 = Point((to_cell._x1 + to_cell._x2) / 2, (to_cell._y1 + to_cell._y2) / 2) # Get the center point of the target cell
+        line = Line(point_cell1, point_cell2) # Create a line from the center point of the current cell to the center point of the target cell
+        if undo:
+            self._win.draw_line(line, "gray") # Draw the line in gray
+        else:
+            self._win.draw_line(line, "red") # Draw the line in red
