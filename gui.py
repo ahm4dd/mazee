@@ -8,7 +8,7 @@ class Line():
         self.p1 = p1
         self.p2 = p2
 
-    def draw(self, canvas: Canvas, fill_color: str):
+    def draw(self, canvas: Canvas, fill_color: str) -> None:
         canvas.create_line(self.p1.x, self.p1.y, self.p2.x, self.p2.y, fill=fill_color, width=2)
 
 class Window():
@@ -21,19 +21,19 @@ class Window():
         self.__canvas.pack()
         self.__running = False
 
-    def redraw(self):
+    def redraw(self) -> None:
         self.__root.update_idletasks()
         self.__root.update()
     
-    def wait_for_close(self):
+    def wait_for_close(self) -> None:
         self.__running = True
         while self.__running:
             self.redraw()
     
-    def close(self):
+    def close(self) -> None:
         self.__running = False
     
-    def draw_line(self, line: Line, fill_color: str):
+    def draw_line(self, line: Line, fill_color: str) -> None:
         line.draw(self.__canvas, fill_color)
 
 
