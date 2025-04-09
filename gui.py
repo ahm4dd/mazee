@@ -8,7 +8,7 @@ class Line():
         self.p1 = p1
         self.p2 = p2
 
-    def draw(self, canvas: Canvas, fill_color: str) -> None:
+    def draw(self, canvas: Canvas, fill_color: str = "white") -> None:
         canvas.create_line(self.p1.x, self.p1.y, self.p2.x, self.p2.y, fill=fill_color, width=2)
 
 class Window():
@@ -33,7 +33,7 @@ class Window():
     def close(self) -> None:
         self.__running = False
     
-    def draw_line(self, line: Line, fill_color: str) -> None:
+    def draw_line(self, line: Line, fill_color: str = "white") -> None:
         line.draw(self.__canvas, fill_color)
 
 
