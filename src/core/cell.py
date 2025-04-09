@@ -1,4 +1,4 @@
-from gui import Window, Point, Line
+from core.gui import Window, Point, Line
 class Cell():
     def __init__(self, win: Window,
                 # Optional parameters:

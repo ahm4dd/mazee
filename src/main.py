@@ -1,5 +1,5 @@
-from gui import *
-from cell import *
+from core.gui import *
+from core.cell import *
 def main():
     win = Window(800, 600)
     # p1 = Point(400, 200)
