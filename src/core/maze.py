@@ -32,26 +32,52 @@ class Maze:
         self._create_cells()
 
     def _create_cells(self) -> None:
-        for i in range(self._num_cols):
+        """
+        Creates a 2D list of Cell objects and draws them on the window.
+
+        The outer list is a list of columns, and the inner list is a list of cells in each column.
+        The cells are drawn on the window in the order they are created, which is from left to right and top to bottom.
+
+        Args:
+            None
+        """
+        for i in range(self._num_cols): # A loop to create a 2D list of cells
             col_cells = []
             for j in range(self._num_rows):
-                col_cells.append(Cell(self._win))
-            self._cells.append(col_cells)
-        for i in range(self._num_cols):
+                col_cells.append(Cell(self._win)) # Create a cell and add it to the column
+            self._cells.append(col_cells) # Add the column to the 2D list of our current maze
+
+        for i in range(self._num_cols): # A loop to draw each cell
             for j in range(self._num_rows):
-                self._draw_cell(i, j)
+                self._draw_cell(i, j) # Draw each cell
 
     def _draw_cell(self, i: int, j: int) -> None:
+        """
+        Draws a cell at the specified column and row indices.
+
+        Calculates the coordinates of the cell based on its position in the grid and the size of each cell.
+        Calls the draw method of the Cell object to render it on the window and animates the drawing process.
+
+        Args:
+            i (int): The column index of the cell.
+            j (int): The row index of the cell.
+        """
+
         if self._win is None:
             return
-        x1 = self._x1 + i * self._cell_size_x
-        y1 = self._y1 + j * self._cell_size_y
-        x2 = x1 + self._cell_size_x
-        y2 = y1 + self._cell_size_y
+        x1 = self._x1 + i * self._cell_size_x # Calculate the x-coordinate of the top left corner of the cell
+        y1 = self._y1 + j * self._cell_size_y # Calculate the y-coordinate of the top left corner of the cell
+        x2 = x1 + self._cell_size_x # Calculate the x-coordinate of the bottom right corner of the cell
+        y2 = y1 + self._cell_size_y # Calculate the y-coordinate of the bottom right corner of the cell
         self._cells[i][j].draw(x1, x2, y1, y2)
         self._animate()
         
     def _animate(self) -> None:
+        """
+        Animates the drawing process of the maze by redrawing the window and pausing for a short period of time.
+        
+        This method is called after each cell is drawn to give the appearance of the maze being drawn in real-time.
+        """
         if self._win is None:
             return
         self._win.redraw()

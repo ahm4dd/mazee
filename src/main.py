@@ -1,6 +1,7 @@
 from core.gui import *
 from core.cell import *
 from core.maze import *
+import unittest
 def main():
     num_rows = 12
     num_cols = 16
