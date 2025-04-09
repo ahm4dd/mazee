@@ -1,13 +1,13 @@
 from core.gui import Window, Point, Line
 class Cell():
-    def __init__(self, win: Window,
+    def __init__(self, win: Window = None,
                 # Optional parameters:
                 has_left_wall: bool = True, has_right_wall: bool = True, has_top_wall: bool = True, has_bottom_wall: bool = True,  x1:int = None, x2:int = None, y1:int = None, y2:int = None):
         """
         Initializes a Cell object with a window and optional parameters to specify whether the cell has a left, right, top, or bottom wall, and the coordinates of the cell.
 
         Args:
-            win (Window): The window to draw the cell on.
+            win (Window): The window to draw the cell on. Defaults to None
             has_left_wall (bool): Whether the cell has a left wall. Defaults to True.
             has_right_wall (bool): Whether the cell has a right wall. Defaults to True.
             has_top_wall (bool): Whether the cell has a top wall. Defaults to True.

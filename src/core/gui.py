@@ -44,9 +44,10 @@ class Window():
         self.width = width  # Set the width of the window
         self.height = height  # Set the height of the window
         self.__root = Tk()  # Initialize the main Tkinter window
+        self.__root.title("Ahm4dd's Maze Solver")
         self.__root.protocol("WM_DELETE_WINDOW", self.close)  # Set the protocol for the window to close (Basically calling self.close when the window closes to make sure the program stops looping and closes safely)
         self.__canvas = Canvas(self.__root, {"bg": "black"})  # Create a canvas with a black background to draw on
-        self.__canvas.pack()  # Pack the canvas into the window 
+        self.__canvas.pack(fill=BOTH, expand=1)  # Pack the canvas into the window 
         self.__running = False  # Initialize the running state to False (Basically if the program is running or not)
 
     def redraw(self) -> None:

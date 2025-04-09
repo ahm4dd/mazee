@@ -1,16 +1,17 @@
 from core.gui import *
 from core.cell import *
+from core.maze import *
 def main():
-    win = Window(800, 600)
-    # p1 = Point(400, 200)
-    # p2 = Point(300, 100)
-    # line = Line(p1, p2)
-    # win.draw_line(line, "red")
-    cell = Cell(win)
-    cell.draw(50, 100, 50, 100) 
-    cell2 = Cell(win)
-    cell2.draw(200, 300, 200, 300)
-    cell.draw_move(cell2)
+    num_rows = 12
+    num_cols = 16
+    margin = 50
+    screen_x = 800
+    screen_y = 600
+    cell_size_x = (screen_x - 2 * margin) / num_cols
+    cell_size_y = (screen_y - 2 * margin) / num_rows
+    win = Window(screen_x, screen_y)
+
+    maze = Maze(margin, margin, num_rows, num_cols, cell_size_x, cell_size_y, win)
     win.wait_for_close()
 
 main()
