@@ -69,6 +69,7 @@ class Maze:
         y1 = self._y1 + j * self._cell_size_y # Calculate the y-coordinate of the top left corner of the cell
         x2 = x1 + self._cell_size_x # Calculate the x-coordinate of the bottom right corner of the cell
         y2 = y1 + self._cell_size_y # Calculate the y-coordinate of the bottom right corner of the cell
+        self._break_entrance_and_exit()
         self._cells[i][j].draw(x1, x2, y1, y2)
         self._animate()
         
@@ -82,3 +83,14 @@ class Maze:
             return
         self._win.redraw()
         time.sleep(0.05)
+    
+    def _break_entrance_and_exit(self):
+        """
+        Removes the entrance and exit walls of the maze.
+
+        This method breaks the left wall of the top-left cell to create an entrance
+        and breaks the bottom wall of the bottom-right cell to create an exit.
+        It then redraws the affected cells to visually update the maze.
+        """
+        self._cells[0][0].has_left_wall = False
+        self._cells[self._num_cols - 1][self._num_rows - 1].has_bottom_wall = False
