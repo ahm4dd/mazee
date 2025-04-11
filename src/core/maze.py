@@ -41,6 +41,8 @@ class Maze:
         # Start breaking walls to form the maze path using recursive backtracking
         self._break_walls_r(0, 0)
         
+        # Reset the visited status of all cells
+        self._reset_cells_visited()
 
     def _create_cells(self) -> None:
         """
@@ -174,3 +176,16 @@ class Maze:
                 
                 # Recursively visit the chosen neighbor
                 self._break_walls_r(next[0], next[1])
+
+    def _reset_cells_visited(self):
+        """
+        Resets the visited status of all cells in the maze.
+
+        This method is used to reset the maze after it has been solved.
+        It sets the visited status of all cells to False, allowing the maze to be solved again.
+        """
+        # Loop through all cells in the maze
+        for i in range(self._num_cols): # A loop to create a 2D list of cells
+            for j in range(self._num_rows):
+                # Reset the visited status of each cell
+                self._cells[i][j].visited = False
