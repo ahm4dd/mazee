@@ -4,7 +4,7 @@ import random
 import time
 
 class Maze:
-    def __init__(self, x1: int, y1: int, num_rows: int, num_cols: int, cell_size_x: int, cell_size_y: int, win: Window = None):
+    def __init__(self, x1: int, y1: int, num_rows: int, num_cols: int, cell_size_x: int, cell_size_y: int, win: Window = None, seed: int = None):
         """
         Initializes a Maze object with the given parameters.
 
@@ -19,7 +19,10 @@ class Maze:
             cell_size_x (float): The width of each cell in the maze.
             cell_size_y (float): The height of each cell in the maze.
             win (Window): The window to draw the maze on. Defaults to None
+            seed (int): The seed to use for the random number generator. Defaults to None
         """
+        if seed is not None:
+            random.seed(seed)
         self._cells = []
         self._x1 = x1
         self._y1 = y1
@@ -29,7 +32,11 @@ class Maze:
         self._cell_size_y = cell_size_y
         self._win = win
 
+        # Create the cells
         self._create_cells()
+
+        self._break_entrance_and_exit()
+        self._break_walls_r(0, 0)
 
     def _create_cells(self) -> None:
         """
@@ -69,7 +76,6 @@ class Maze:
         y1 = self._y1 + j * self._cell_size_y # Calculate the y-coordinate of the top left corner of the cell
         x2 = x1 + self._cell_size_x # Calculate the x-coordinate of the bottom right corner of the cell
         y2 = y1 + self._cell_size_y # Calculate the y-coordinate of the bottom right corner of the cell
-        self._break_entrance_and_exit()
         self._cells[i][j].draw(x1, x2, y1, y2)
         self._animate()
         
@@ -94,3 +100,61 @@ class Maze:
         """
         self._cells[0][0].has_left_wall = False
         self._cells[self._num_cols - 1][self._num_rows - 1].has_bottom_wall = False
+    def _break_walls_r(self, i, j):
+        """
+        Recursively breaks walls between cells to create a random maze path using Depth-First Search (DFS).
+
+        This method uses a recursive backtracking algorithm to visit each cell in the maze,
+        breaking walls between the current cell and a randomly chosen unvisited neighboring cell.
+        It continues this process until all cells have been visited, creating a solvable maze.
+
+        Args:
+            i (int): The column index of the current cell.
+            j (int): The row index of the current cell.
+        """
+
+        # Mark the current cell as visited
+        self._cells[i][j].visited = True
+        
+        while True:
+            # List to store unvisited neighboring cells
+            to_visit = []
+            
+            # Check neighbors (left, top, right, bottom) and add unvisited ones to the list
+            if i - 1 >= 0 and not self._cells[i - 1][j].visited:
+                to_visit.append((i - 1, j))
+            if j - 1 >= 0 and not self._cells[i][j - 1].visited:
+                to_visit.append((i, j - 1))
+            if i + 1 < self._num_cols and not self._cells[i + 1][j].visited:
+                to_visit.append((i + 1, j))
+            if j + 1 < self._num_rows and not self._cells[i][j + 1].visited:
+                to_visit.append((i, j + 1))
+            
+            # If no unvisited neighbors, exit the loop
+            if len(to_visit) == 0:
+                # Redraw the current cell to visualize the path
+                self._draw_cell(i, j)
+                return
+            else:
+                # Randomly select one of the unvisited neighbors
+                next = random.choice(to_visit)
+                
+                # Break the wall between the current cell and the chosen neighbor
+                if next[0] == i - 1:  # Move left
+                    self._cells[i][j].has_left_wall = False
+                    self._cells[next[0]][next[1]].has_right_wall = False
+                elif next[0] == i + 1:  # Move right
+                    self._cells[i][j].has_right_wall = False
+                    self._cells[next[0]][next[1]].has_left_wall = False
+                elif next[1] == j - 1:  # Move up
+                    self._cells[i][j].has_top_wall = False
+                    self._cells[next[0]][next[1]].has_bottom_wall = False
+                elif next[1] == j + 1:  # Move down
+                    self._cells[i][j].has_bottom_wall = False
+                    self._cells[next[0]][next[1]].has_top_wall = False
+                
+                # Recursively visit the chosen neighbor
+                self._break_walls_r(next[0], next[1])
+
+
+            

@@ -2,34 +2,45 @@ from core.gui import Window, Point, Line
 class Cell():
     def __init__(self, win: Window = None,
                 # Optional parameters:
-                has_left_wall: bool = True, has_right_wall: bool = True, has_top_wall: bool = True, has_bottom_wall: bool = True,  x1:int = None, x2:int = None, y1:int = None, y2:int = None):
+                has_left_wall: bool = True, has_right_wall: bool = True, has_top_wall: bool = True, has_bottom_wall: bool = True,  
+                x1: int = None, x2: int = None, y1: int = None, y2: int = None,
+                visited: bool = False):
         """
-        Initializes a Cell object with a window and optional parameters to specify whether the cell has a left, right, top, or bottom wall, and the coordinates of the cell.
+        Initializes a Cell object with a window and optional parameters for walls and coordinates.
 
         Args:
-            win (Window): The window to draw the cell on. Defaults to None
-            has_left_wall (bool): Whether the cell has a left wall. Defaults to True.
-            has_right_wall (bool): Whether the cell has a right wall. Defaults to True.
-            has_top_wall (bool): Whether the cell has a top wall. Defaults to True.
-            has_bottom_wall (bool): Whether the cell has a bottom wall. Defaults to True.
-            x1 (int): The x-coordinate of the top left corner of the cell. Defaults to None.
-            x2 (int): The x-coordinate of the bottom right corner of the cell. Defaults to None.
-            y1 (int): The y-coordinate of the top left corner of the cell. Defaults to None.
-            y2 (int): The y-coordinate of the bottom right corner of the cell. Defaults to None.
+            win (Window, optional): The window to draw the cell on. Defaults to None.
+            has_left_wall (bool, optional): Whether the cell has a left wall. Defaults to True.
+            has_right_wall (bool, optional): Whether the cell has a right wall. Defaults to True.
+            has_top_wall (bool, optional): Whether the cell has a top wall. Defaults to True.
+            has_bottom_wall (bool, optional): Whether the cell has a bottom wall. Defaults to True.
+            x1 (int, optional): The x-coordinate of the top left corner of the cell. Defaults to None.
+            x2 (int, optional): The x-coordinate of the bottom right corner of the cell. Defaults to None.
+            y1 (int, optional): The y-coordinate of the top left corner of the cell. Defaults to None.
+            y2 (int, optional): The y-coordinate of the bottom right corner of the cell. Defaults to None.
+            visited (bool, optional): Whether the cell has been visited. Defaults to False.
         """
+        # Initialize the coordinates of the cell
         self._x1 = x1
         self._x2 = x2
         self._y1 = y1
         self._y2 = y2
+        
+        # Set the window to draw the cell on
         self._win = win
+        
+        # Initialize the walls of the cell
         self.has_left_wall = has_left_wall
         self.has_right_wall = has_right_wall
         self.has_top_wall = has_top_wall
         self.has_bottom_wall = has_bottom_wall
+        
+        # Flag to indicate if the cell has been visited
+        self.visited = visited
     
     def draw(self, x1_top_left: int, x2_bottom_right: int, y1_top_left: int, y2_bottom_right: int) -> None:
         """
-        Draws this cell on the given window.
+        Draws the cell on the window with its walls based on the given coordinates.
 
         Args:
             x1_top_left (int): The x-coordinate of the top left corner of the cell.
@@ -37,37 +48,50 @@ class Cell():
             y1_top_left (int): The y-coordinate of the top left corner of the cell.
             y2_bottom_right (int): The y-coordinate of the bottom right corner of the cell.
         """
+        # Update cell coordinates
         self._x1 = x1_top_left
         self._x2 = x2_bottom_right
         self._y1 = y1_top_left
         self._y2 = y2_bottom_right
 
+        # Draw or remove right wall
         if self.has_right_wall:
-            line = Line(Point(self._x2, self._y1), Point(self._x2, self._y2)) # Create a line from the top right corner to the bottom right corner
-            self._win.draw_line(line) # Draw the line on the window
-        elif not self.has_right_wall:
-            line = Line(Point(self._x2, self._y1), Point(self._x2, self._y2)) # Create a line from the top right corner to the bottom right corner
-            self._win.draw_line(line, "black") # Draw the line on the window in black to remove the wall
+            # Draw right wall
+            line = Line(Point(self._x2, self._y1), Point(self._x2, self._y2))
+            self._win.draw_line(line)
+        else:
+            # Remove right wall by drawing in black
+            line = Line(Point(self._x2, self._y1), Point(self._x2, self._y2))
+            self._win.draw_line(line, "black")
 
+        # Draw or remove left wall
         if self.has_left_wall:
-            line = Line(Point(self._x1, self._y1), Point(self._x1, self._y2)) # Create a line from the top left corner to the bottom left corner
+            # Draw left wall
+            line = Line(Point(self._x1, self._y1), Point(self._x1, self._y2))
             self._win.draw_line(line)
-        elif not self.has_left_wall:
-            line = Line(Point(self._x1, self._y1), Point(self._x1, self._y2)) # Create a line from the top left corner to the bottom left corner
+        else:
+            # Remove left wall by drawing in black
+            line = Line(Point(self._x1, self._y1), Point(self._x1, self._y2))
             self._win.draw_line(line, "black")
 
+        # Draw or remove top wall
         if self.has_top_wall:
-            line = Line(Point(self._x1, self._y1), Point(self._x2, self._y1)) # Create a line from the top left corner to the top right corner
+            # Draw top wall
+            line = Line(Point(self._x1, self._y1), Point(self._x2, self._y1))
             self._win.draw_line(line)
-        elif not self.has_top_wall:
-            line = Line(Point(self._x1, self._y1), Point(self._x2, self._y1)) # Create a line from the top left corner to the top right corner
+        else:
+            # Remove top wall by drawing in black
+            line = Line(Point(self._x1, self._y1), Point(self._x2, self._y1))
             self._win.draw_line(line, "black")
 
+        # Draw or remove bottom wall
         if self.has_bottom_wall:
-            line = Line(Point(self._x1, self._y2), Point(self._x2, self._y2)) # Create a line from the bottom left corner to the bottom right corner
+            # Draw bottom wall
+            line = Line(Point(self._x1, self._y2), Point(self._x2, self._y2))
             self._win.draw_line(line)
-        elif not self.has_bottom_wall:
-            line = Line(Point(self._x1, self._y2), Point(self._x2, self._y2)) # Create a line from the bottom left corner to the bottom right corner
+        else:
+            # Remove bottom wall by drawing in black
+            line = Line(Point(self._x1, self._y2), Point(self._x2, self._y2))
             self._win.draw_line(line, "black")
     
     def draw_move(self, to_cell: 'Cell', undo: bool = False) -> None:
