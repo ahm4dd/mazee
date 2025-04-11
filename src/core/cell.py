@@ -1,4 +1,5 @@
 from core.gui import Window, Point, Line
+from constants import WALL_COLOR, PATH_COLOR, BACKTRACK_COLOR, ERASER_COLOR
 class Cell():
     def __init__(self, win: Window = None,
                 # Optional parameters:
@@ -58,41 +59,41 @@ class Cell():
         if self.has_right_wall:
             # Draw right wall
             line = Line(Point(self._x2, self._y1), Point(self._x2, self._y2))
-            self._win.draw_line(line)
+            self._win.draw_line(line, WALL_COLOR)
         else:
             # Remove right wall by drawing in black
             line = Line(Point(self._x2, self._y1), Point(self._x2, self._y2))
-            self._win.draw_line(line, "black")
+            self._win.draw_line(line, ERASER_COLOR)
 
         # Draw or remove left wall
         if self.has_left_wall:
             # Draw left wall
             line = Line(Point(self._x1, self._y1), Point(self._x1, self._y2))
-            self._win.draw_line(line)
+            self._win.draw_line(line, WALL_COLOR)
         else:
             # Remove left wall by drawing in black
             line = Line(Point(self._x1, self._y1), Point(self._x1, self._y2))
-            self._win.draw_line(line, "black")
+            self._win.draw_line(line, ERASER_COLOR)
 
         # Draw or remove top wall
         if self.has_top_wall:
             # Draw top wall
             line = Line(Point(self._x1, self._y1), Point(self._x2, self._y1))
-            self._win.draw_line(line)
+            self._win.draw_line(line, WALL_COLOR)
         else:
             # Remove top wall by drawing in black
             line = Line(Point(self._x1, self._y1), Point(self._x2, self._y1))
-            self._win.draw_line(line, "black")
+            self._win.draw_line(line, ERASER_COLOR)
 
         # Draw or remove bottom wall
         if self.has_bottom_wall:
             # Draw bottom wall
             line = Line(Point(self._x1, self._y2), Point(self._x2, self._y2))
-            self._win.draw_line(line)
+            self._win.draw_line(line, WALL_COLOR)
         else:
             # Remove bottom wall by drawing in black
             line = Line(Point(self._x1, self._y2), Point(self._x2, self._y2))
-            self._win.draw_line(line, "black")
+            self._win.draw_line(line, ERASER_COLOR)
     
     def draw_move(self, to_cell: 'Cell', undo: bool = False) -> None:
         """
@@ -105,6 +106,6 @@ class Cell():
         point_cell2 = Point((to_cell._x1 + to_cell._x2) / 2, (to_cell._y1 + to_cell._y2) / 2) # Get the center point of the target cell
         line = Line(point_cell1, point_cell2) # Create a line from the center point of the current cell to the center point of the target cell
         if undo:
-            self._win.draw_line(line, "gray") # Draw the line in gray
+            self._win.draw_line(line, BACKTRACK_COLOR) # Draw the line in gray
         else:
-            self._win.draw_line(line, "red") # Draw the line in red
+            self._win.draw_line(line, PATH_COLOR) # Draw the line in red

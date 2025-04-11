@@ -1,5 +1,6 @@
 from core.gui import Window
 from core.cell import Cell
+from constants import ANIMATION_SPEED
 import random
 import time
 
@@ -105,7 +106,7 @@ class Maze:
         if self._win is None:
             return
         self._win.redraw()
-        time.sleep(0.05)
+        time.sleep(ANIMATION_SPEED)
     
     def _break_entrance_and_exit(self):
         """
