@@ -8,8 +8,8 @@ class Maze:
         """
         Initializes a Maze object with the given parameters.
 
-        The Maze class is the class that builds the actual maze and animates it.
-        It uses the Cell class to create the cells and the Window class to draw them on the screen.
+        The Maze class is responsible for constructing the maze layout and handling its animation.
+        It utilizes the Cell class to generate individual cells and the Window class for graphical rendering.
 
         Args:
             x1 (int): The x-coordinate of the top left corner of the maze.
@@ -18,25 +18,29 @@ class Maze:
             num_cols (int): The number of columns in the maze.
             cell_size_x (float): The width of each cell in the maze.
             cell_size_y (float): The height of each cell in the maze.
-            win (Window): The window to draw the maze on. Defaults to None
-            seed (int): The seed to use for the random number generator. Defaults to None
+            win (Window, optional): The window to draw the maze on. Defaults to None.
+            seed (int, optional): The seed for the random number generator. Defaults to None.
         """
+        # Set the random seed if provided to ensure reproducibility
         if seed is not None:
             random.seed(seed)
-        self._cells = []
-        self._x1 = x1
-        self._y1 = y1
-        self._num_rows = num_rows
-        self._num_cols = num_cols
-        self._cell_size_x = cell_size_x
-        self._cell_size_y = cell_size_y
-        self._win = win
 
-        # Create the cells
+        # Initialize the maze grid and its properties
+        self._cells = []  # A 2D list to store the cells of the maze
+        self._x1 = x1  # X-coordinate of the top left corner of the maze
+        self._y1 = y1  # Y-coordinate of the top left corner of the maze
+        self._num_rows = num_rows  # Total number of rows in the maze
+        self._num_cols = num_cols  # Total number of columns in the maze
+        self._cell_size_x = cell_size_x  # Width of each cell
+        self._cell_size_y = cell_size_y  # Height of each cell
+        self._win = win  # The window object where the maze will be drawn
+
+        # Create the cells for the maze
         self._create_cells()
 
-        self._break_entrance_and_exit()
+        # Start breaking walls to form the maze path using recursive backtracking
         self._break_walls_r(0, 0)
+        
 
     def _create_cells(self) -> None:
         """
@@ -65,6 +69,8 @@ class Maze:
         Calculates the coordinates of the cell based on its position in the grid and the size of each cell.
         Calls the draw method of the Cell object to render it on the window and animates the drawing process.
 
+        It also breaks the entrance and exit walls of the maze.
+
         Args:
             i (int): The column index of the cell.
             j (int): The row index of the cell.
@@ -72,11 +78,20 @@ class Maze:
 
         if self._win is None:
             return
-        x1 = self._x1 + i * self._cell_size_x # Calculate the x-coordinate of the top left corner of the cell
-        y1 = self._y1 + j * self._cell_size_y # Calculate the y-coordinate of the top left corner of the cell
-        x2 = x1 + self._cell_size_x # Calculate the x-coordinate of the bottom right corner of the cell
-        y2 = y1 + self._cell_size_y # Calculate the y-coordinate of the bottom right corner of the cell
+
+        # Calculate the coordinates of the cell based on its position in the grid and the size of each cell
+        x1 = self._x1 + i * self._cell_size_x  # Calculate the x-coordinate of the top left corner of the cell
+        y1 = self._y1 + j * self._cell_size_y  # Calculate the y-coordinate of the top left corner of the cell
+        x2 = x1 + self._cell_size_x  # Calculate the x-coordinate of the bottom right corner of the cell
+        y2 = y1 + self._cell_size_y  # Calculate the y-coordinate of the bottom right corner of the cell
+
+        # Remove the entrance and exit walls
+        self._break_entrance_and_exit()
+
+        # Draw the cell
         self._cells[i][j].draw(x1, x2, y1, y2)
+
+        # Animate the drawing process
         self._animate()
         
     def _animate(self) -> None:
@@ -100,6 +115,7 @@ class Maze:
         """
         self._cells[0][0].has_left_wall = False
         self._cells[self._num_cols - 1][self._num_rows - 1].has_bottom_wall = False
+
     def _break_walls_r(self, i, j):
         """
         Recursively breaks walls between cells to create a random maze path using Depth-First Search (DFS).
@@ -112,7 +128,10 @@ class Maze:
             i (int): The column index of the current cell.
             j (int): The row index of the current cell.
         """
-
+        # Check if the current cell exists
+        if i < 0 or i >= self._num_cols or j < 0 or j >= self._num_rows:
+            return
+        
         # Mark the current cell as visited
         self._cells[i][j].visited = True
         
@@ -155,6 +174,3 @@ class Maze:
                 
                 # Recursively visit the chosen neighbor
                 self._break_walls_r(next[0], next[1])
-
-
-            
