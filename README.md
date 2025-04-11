@@ -1,4 +1,6 @@
 # mazee
+[![Python Version](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/release/python-3100/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Python application that generates and solves random mazes using a recursive backtracking algorithm. The application creates a visual representation of the maze and animates both the generation and solving processes.
 
