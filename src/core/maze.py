@@ -189,3 +189,77 @@ class Maze:
             for j in range(self._num_rows):
                 # Reset the visited status of each cell
                 self._cells[i][j].visited = False
+    
+    def solve(self):
+        """
+        Solves the maze using a recursive depth-first search algorithm.
+
+        This method is the entry point for solving the maze. It calls the recursive
+        helper method _solve_r() to start the search from the top-left cell of the maze.
+        If the search is successful, it returns True. If the search is unsuccessful, it returns False.
+        """
+        # Start the search from the top-left cell
+        if self._solve_r(0, 0):
+            # If the search is successful, return True
+            return True
+        # If the search is unsuccessful, return False
+        return False
+    
+    def _solve_r(self, i: int, j: int):
+        """
+        Solves the maze using a recursive depth-first search algorithm.
+
+        This method is the recursive helper method for the solve() method. It is
+        called to start the search from the top-left cell of the maze. If the search
+        is successful, it returns True. If the search is unsuccessful, it returns False.
+
+        Args:
+            i (int): The column index of the current cell.
+            j (int): The row index of the current cell.
+        """
+        if (i > 0 or i < self._num_cols) and (j > 0 or j < self._num_rows):
+            # Animate the drawing process
+            self._animate()
+            # Mark the current cell as visited
+            self._cells[i][j].visited = True
+            
+            # If the current cell is the exit, return True
+            if i == self._num_cols - 1 and j == self._num_rows - 1:
+                return True
+            
+            # Check the four possible directions to move
+            # If the direction is valid (i.e., the cell is not visited and there is no wall in the way)
+            # draw the move, recursively call _solve_r() to continue the search,
+            # and if the search is successful, return True
+            # If the search is unsuccessful, draw the move again (with a different color to indicate failure)
+            # and return False
+            
+            # Left direction
+            if i > 0 and not self._cells[i - 1][j].visited and not self._cells[i][j].has_left_wall:
+                self._cells[i][j].draw_move(self._cells[i - 1][j])
+                if self._solve_r(i - 1, j):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[i - 1][j], True)
+            # Top direction
+            if j > 0 and not self._cells[i][j - 1].visited and not self._cells[i][j].has_top_wall:
+                self._cells[i][j].draw_move(self._cells[i][j - 1])
+                if self._solve_r(i, j - 1):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[i][j - 1], True)
+            # Right direction
+            if i + 1 < self._num_cols and not self._cells[i + 1][j].visited and not self._cells[i][j].has_right_wall:
+                self._cells[i][j].draw_move(self._cells[i + 1][j])
+                if self._solve_r(i + 1, j):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[i + 1][j], True)
+            # Bottom direction
+            if j + 1 < self._num_rows and not self._cells[i][j + 1].visited and not self._cells[i][j].has_bottom_wall:
+                self._cells[i][j].draw_move(self._cells[i][j + 1])
+                if self._solve_r(i, j + 1):
+                    return True
+                else:
+                    self._cells[i][j].draw_move(self._cells[i][j + 1], True)
+        return False
