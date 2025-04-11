@@ -1,4 +1,5 @@
-from tkinter import Tk, BOTH, Canvas
+from tkinter import Button, Tk, BOTH, Canvas
+from constants import WINDOW_BG_COLOR, LINE_WIDTH
 class Point():
     def __init__(self, x: int = 0, y: int = 0):
         """
@@ -30,7 +31,7 @@ class Line():
             canvas (Canvas): The canvas to draw on.
             fill_color (str): The color to draw the line with. Defaults to "white".
         """
-        canvas.create_line(self.p1.x, self.p1.y, self.p2.x, self.p2.y, fill=fill_color, width=2)
+        canvas.create_line(self.p1.x, self.p1.y, self.p2.x, self.p2.y, fill=fill_color, width=LINE_WIDTH)
 
 class Window():
     def __init__(self, width: int, height: int):
@@ -44,9 +45,13 @@ class Window():
         self.width = width  # Set the width of the window
         self.height = height  # Set the height of the window
         self.__root = Tk()  # Initialize the main Tkinter window
+        self.__root.geometry("1920x1080")  # Set the size of the window
+        self.__root.resizable(False, False)  # Disable the window resizing
+        self.__exit_button = Button(self.__root, text="Exit", command=lambda: self.close() or self.__root.destroy()) # Create a button to close the window
+        self.__exit_button.pack()  # Pack the exit button into the window
         self.__root.title("Ahm4dd's Maze Solver")
         self.__root.protocol("WM_DELETE_WINDOW", self.close)  # Set the protocol for the window to close (Basically calling self.close when the window closes to make sure the program stops looping and closes safely)
-        self.__canvas = Canvas(self.__root, {"bg": "black"})  # Create a canvas with a black background to draw on
+        self.__canvas = Canvas(self.__root, {"bg": WINDOW_BG_COLOR})  # Create a canvas with a black background to draw on
         self.__canvas.pack(fill=BOTH, expand=1)  # Pack the canvas into the window 
         self.__running = False  # Initialize the running state to False (Basically if the program is running or not)
 

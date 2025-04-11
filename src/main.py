@@ -1,18 +1,21 @@
 from core.gui import *
 from core.cell import *
 from core.maze import *
+from constants import *
 def main():
-    num_rows = 12
-    num_cols = 16
-    margin = 50
-    screen_x = 800
-    screen_y = 600
-    cell_size_x = (screen_x - 2 * margin) / num_cols
-    cell_size_y = (screen_y - 2 * margin) / num_rows
-    win = Window(screen_x, screen_y)
-
-    maze = Maze(margin, margin, num_rows, num_cols, cell_size_x, cell_size_y, win)
+    # Calculate cell size based on window dimensions and maze grid
+    cell_size_x = (WINDOW_WIDTH - 2 * MARGIN) / NUM_COLS
+    cell_size_y = (WINDOW_HEIGHT - 2 * MARGIN) / NUM_ROWS
+    
+    # Create window
+    win = Window(WINDOW_WIDTH, WINDOW_HEIGHT)
+    
+    # Create and solve maze
+    maze = Maze(MARGIN, MARGIN, NUM_ROWS, NUM_COLS, cell_size_x, cell_size_y, win)
     maze.solve()
+    
+    # Wait for user to close window
     win.wait_for_close()
 
-main()
+if __name__ == "__main__":
+    main()
