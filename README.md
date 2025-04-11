@@ -2,7 +2,7 @@
 
 A Python application that generates and solves random mazes using a recursive backtracking algorithm. The application creates a visual representation of the maze and animates both the generation and solving processes.
 
-![Maze Solver Demo](nothing.git)
+![Maze Solver Demo](https://github.com/user-attachments/assets/fb1bb030-6ca8-4652-87af-9ff3a25b2338)
 
 ## Features
 
@@ -48,7 +48,7 @@ python3 -m tkinter
 Run the application:
 
 ```bash
-python src/main.py
+python3 src/main.py
 ```
 
 This will:
